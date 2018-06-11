@@ -1,0 +1,50 @@
+{
+    "name": "anujs-webpack4-ie7-8",
+    "version": "1.0.0",
+    "description": "基于anujs和webpack4兼容ie7-8的配置",
+    "main": "index.js",
+    "scripts": {
+        "start": "node ./bin/dev.js",
+        "react": "node ./bin/react.js",
+        "buildPreview": "node ./bin/buildPreview.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/magicapple/anujs-webpack4-ie7-8.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/magicapple/anujs-webpack4-ie7-8/issues"
+    },
+    "homepage": "https://github.com/magicapple/anujs-webpack4-ie7-8#readme",
+    "dependencies": {
+        "anujs": "^1.4.2",
+        "react": "^16.4.0",
+        "react-dom": "^16.4.0"
+    },
+    "devDependencies": {
+        "argv": "0.0.2",
+        "babel-core": "^6.26.3",
+        "babel-loader": "^7.1.4",
+        "babel-plugin-transform-runtime": "^6.23.0",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-env": "^1.7.0",
+        "babel-preset-react": "^6.24.1",
+        "babel-preset-stage-2": "^6.24.1",
+        "core-js": "^2.5.7",
+        "css-loader": "^0.28.11",
+        "del": "^3.0.0",
+        "es3ify-webpack-plugin": "0.0.1",
+        "html-webpack-plugin": "^4.0.0-alpha",
+        "koa": "^2.5.1",
+        "koa-static": "^4.0.3",
+        "shelljs": "^0.8.2",
+        "style-loader": "^0.21.0",
+        "uglifyjs-webpack-plugin": "^1.2.5",
+        "url-loader": "^1.0.1",
+        "webpack": "^4.12.0",
+        "webpack-cli": "^3.0.3"
+    }
+}
