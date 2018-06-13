@@ -17,6 +17,10 @@ npm start
 npm run buildPreview
 
 // 开启 使用 react库的开发模式
+npm run react
+
+// 开启 使用 react库的生产模式
+npm run reactPreview
 
 // 浏览器访问
 http://127.0.0.1:8087/production.html
