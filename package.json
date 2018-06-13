@@ -7,6 +7,7 @@
         "start": "node ./bin/dev.js",
         "react": "node ./bin/react.js",
         "buildPreview": "node ./bin/buildPreview.js",
+        "reactPreview": "node ./bin/reactPreview.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
