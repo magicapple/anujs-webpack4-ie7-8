@@ -142,8 +142,11 @@ export default class SelectBox extends React.PureComponent {
 ```
 
 执行到
+
 parent.insertBefore(dom, after); 出错，出错时
 
 parent 为 DispHTMLOptionElement
+
 dom 为 DispHTMLDOMTextNode
+
 after 为 DispHTMLDOMTextNode
