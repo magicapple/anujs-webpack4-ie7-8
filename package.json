@@ -21,7 +21,7 @@
     },
     "homepage": "https://github.com/magicapple/anujs-webpack4-ie7-8#readme",
     "dependencies": {
-        "anujs": "^1.4.2",
+        "anujs": "^1.4.3",
         "react": "^16.4.0",
         "react-dom": "^16.4.0"
     },

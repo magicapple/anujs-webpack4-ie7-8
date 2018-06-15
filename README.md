@@ -26,7 +26,101 @@ npm run reactPreview
 http://127.0.0.1:8087/production.html
 ```
 
-## anujs 1.4.2 发现的一些问题
+## anujs 1.4.3 发现的一些问题
+
+1.  使用 PureComponent 时，组件两次 setState 值不变并且父组件在此之前也进行过 setState，会导致该组件与其相邻的前面组件的 dom 节点位置互换 (chrom 67, ie7, ie8)
+
+该问题出现需要满足如下几个条件:
+
+> 1.  组件使用 PureComponent
+> 2.  父组件进行过 setState（改不改变值都可以）
+> 3.  子组件 setState，但是值跟上一次相同
+> 4.  子组件前面存在相邻的组件
+
+组件代码如下
+
+```
+// innerBox.jsx
+import React from 'react';
+
+class InnerBox extends React.PureComponent {
+    state = {
+        current: 0,
+    };
+
+    componentDidMount() {
+        console.log('InnerBox render');
+        setTimeout(() => {
+            console.log('current跟上次不一样，一切正常');
+            this.setState({ current: 1 });
+        }, 500);
+        setTimeout(() => {
+            console.log('current跟上次一样，dom位置互换');
+            this.setState({ current: 1 });
+        }, 1000);
+        setTimeout(() => {
+            console.log('current跟上次不一样，dom位置复原');
+            this.setState({ current: 2 });
+        }, 1500);
+        setTimeout(() => {
+            console.log('current跟上次一样，dom位置互换');
+            this.setState({ current: 2 });
+        }, 2000);
+    }
+
+    render() {
+        console.log('inner render trigger');
+        return (
+            <div style={{ border: '1px solid #f00', background: '#ffc' }}>
+                <div style={{ height: 100 }}>内部组件</div>
+            </div>
+        );
+    }
+}
+
+export default InnerBox;
+
+// wrapBox
+
+import React from 'react';
+import InnerBox from './innerBox';
+
+class WrapBox extends React.PureComponent {
+    state = {
+        value: 1,
+    };
+
+    componentDidMount() {
+        console.log('WrapBox render');
+        // 此处如果在组件创建以后，再次setState，会导致dom位置错误的现象发生
+        setTimeout(() => {
+            console.log('父容器state值改变');
+            this.setState({
+                value: 1,
+            });
+        }, 700);
+    }
+
+    /**
+     * 渲染组件
+     */
+    render() {
+        console.log('wrap render trigger');
+        return (
+            <div>
+                <div style={{ border: '1px solid #0f0', background: '#cff', cursor: 'pointer' }}>标题区域1</div>
+                <div style={{ border: '1px solid #0f0', background: '#cff', cursor: 'pointer' }}>标题区域2</div>
+                <InnerBox />
+                <div style={{ border: '1px solid #0f0', background: '#cff', cursor: 'pointer' }}>标题区域3</div>
+            </div>
+        );
+    }
+}
+
+export default WrapBox;
+```
+
+## anujs 1.4.2 发现的一些问题（都已经在 1.4.3 修复了）
 
 1.  在 webpack 的 `production` mode 下面，代码执行有错误，(chrome 66，ie7，ie8)
 
