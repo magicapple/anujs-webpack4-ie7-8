@@ -14,7 +14,7 @@ export default class InsertDom extends React.PureComponent {
         const last = list[list.length - 1];
         const dom = document.createElement('div');
         dom.innerHTML = `insert_${last}`;
-        const div = document.getElementById(`list${last}`);
+        const div = document.getElementById(`list_${last}`);
         div.parentElement.insertBefore(dom, div);
     };
     clickHandle = () => {
@@ -36,8 +36,8 @@ export default class InsertDom extends React.PureComponent {
                 <button onClick={this.clickHandle}>点击增加数据</button>
                 {list.map((item, index) => {
                     return (
-                        <div key={index} id={`list${index}`}>
-                            {item}:<span id={`box${index}`}>0</span>
+                        <div key={index} id={`list_${index}`}>
+                            {item}:<span id={`box_${index}`}>0</span>
                         </div>
                     );
                 })}

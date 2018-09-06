@@ -8,10 +8,12 @@ import SelectBox from './selectBox';
 import WrapBox from './wrapBox';
 import ChangeDom from './changDom';
 import InsertDom from './insertDom';
+import FixInsertDom from './fixInsertDom';
 
 const render = function render() {
     ReactDOM.render(
         <div>
+            <FixInsertDom />
             <InsertDom />
             <ChangeDom />
             <WrapBox />
