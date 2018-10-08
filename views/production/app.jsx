@@ -9,10 +9,12 @@ import WrapBox from './wrapBox';
 import ChangeDom from './changDom';
 import InsertDom from './insertDom';
 import FixInsertDom from './fixInsertDom';
+import CreateContext from './createContext';
 
 const render = function render() {
     ReactDOM.render(
         <div>
+            <CreateContext />
             <FixInsertDom />
             <InsertDom />
             <ChangeDom />
