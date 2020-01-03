@@ -26,7 +26,168 @@ npm run reactPreview
 http://127.0.0.1:8087/production.html
 ```
 
-## anujs 1.4.3 发现的一些问题
+## anujs 1.4.7 发现的一些问题
+
+1. React.createContext 无法通过 Provider  传入数据，这个问题是从 1.4.3 开始的，测试了 1.4.1 和 1.4.2 是可以的。
+
+代码如下
+
+```
+import React from 'react';
+import ReactDom from 'react-dom';
+
+const ThemeContext = React.createContext('light');
+
+export default class CreateContext extends React.Component {
+    render() {
+        // Use a Provider to pass the current theme to the tree below.
+        // Any component can read it, no matter how deep it is.
+        // In this example, we're passing "dark" as the current value.
+        return (
+            <ThemeContext.Provider value="dark">
+                <Toolbar />
+            </ThemeContext.Provider>
+        );
+    }
+}
+
+// A component in the middle doesn't have to
+// pass the theme down explicitly anymore.
+function Toolbar(props) {
+    return (
+        <div>
+            <ThemedButton />
+        </div>
+    );
+}
+
+function ThemedButton(props) {
+    // Use a Consumer to read the current theme context.
+    // React will find the closest theme Provider above and use its value.
+    // In this example, the current theme is "dark".
+    return <ThemeContext.Consumer>{theme => <Button {...props} theme={theme} />}</ThemeContext.Consumer>;
+}
+
+function Button(props) {
+    return (
+        <div>
+            正确值应该是传入的dark，现在传入值为：
+            <span style={{ color: 'red' }}>{props.theme}</span>
+        </div>
+    );
+}
+```
+
+## anujs 1.4.6 发现的一些问题
+
+> 以下两个问题  采用了先增加容器数据，然后再插入 dom 的方式规避了，具体看 demo 里面
+
+1. 在一个组件渲染完成后，通过 dom 操作改变了其中一部分的内容，然后再对组件进行更新，会导致 ie(ie7,8,9,10,11)报错，chrome 下面渲染结果和 react 不一致
+
+代码如下
+
+```
+import React from 'react';
+import ReactDom from 'react-dom';
+
+export default class ChangeDom extends React.PureComponent {
+    state = {
+        list: [],
+    };
+    componentDidMount() {
+        console.log('box componentDidMount trigger');
+    }
+
+    renderSpan = () => {
+        const { list } = this.state;
+        const last = list[list.length - 1];
+        document.getElementById(`box${last}`).innerHTML = `update_${last}`;
+    };
+    clickHandle = () => {
+        this.setState(
+            {
+                list: [...this.state.list, this.state.list.length],
+            },
+            () => {
+                this.renderSpan();
+            },
+        );
+    };
+    render() {
+        const { list } = this.state;
+
+        return (
+            <div style={{ width: 800, border: '1px solid #f00', margin: 20 }}>
+                <h1>修改已有dom的内容导致ie下面出错</h1>
+                <button onClick={this.clickHandle}>点击增加数据</button>
+                {list.map((item, index) => {
+                    return (
+                        <div key={index} id={`list${index}`}>
+                            {item}:<span id={`box${index}`}>0</span>
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    }
+}
+```
+
+1. 在一个组件渲染完成后，通过 dom 操作在其中插入了 dom 节点，然后再对组件进行更新，dom 的渲染顺序和 react 的渲染结果不符（chrome，ie 都有）
+
+代码如下
+
+```
+import React from 'react';
+import ReactDom from 'react-dom';
+
+export default class InsertDom extends React.PureComponent {
+    state = {
+        list: [],
+    };
+    componentDidMount() {
+        console.log('box componentDidMount trigger');
+    }
+
+    renderSpan = () => {
+        const { list } = this.state;
+        const last = list[list.length - 1];
+        const dom = document.createElement('div');
+        dom.innerHTML = `insert_${last}`;
+        const div = document.getElementById(`list${last}`);
+        div.parentElement.insertBefore(dom, div);
+    };
+    clickHandle = () => {
+        this.setState(
+            {
+                list: [...this.state.list, this.state.list.length],
+            },
+            () => {
+                this.renderSpan();
+            },
+        );
+    };
+    render() {
+        const { list } = this.state;
+
+        return (
+            <div style={{ width: 800, border: '1px solid #f00', margin: 20 }}>
+                <h1>在列表中插通过dom操作插入数据</h1>
+                <button onClick={this.clickHandle}>点击增加数据</button>
+                {list.map((item, index) => {
+                    return (
+                        <div key={index} id={`list${index}`}>
+                            {item}:<span id={`box${index}`}>0</span>
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    }
+}
+```
+
+## anujs 1.4.3 发现的一些问题（已经在 1.4.4 修复了）
 
 1.  使用 PureComponent 时，组件两次 setState 值不变并且父组件在此之前也进行过 setState，会导致该组件与其相邻的前面组件的 dom 节点位置互换 (chrom 67, ie7, ie8)
 
