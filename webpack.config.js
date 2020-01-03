@@ -7,6 +7,7 @@ module.exports = {
     devtool: 'cheap-module-source-map',
     entry: {
         production: path.resolve(__dirname, './views/production/app.jsx'),
+        loadable: path.resolve(__dirname, './views/loadable/app.jsx'),
     },
     output: {
         path: path.resolve(__dirname, 'devtmp'),
@@ -84,6 +85,18 @@ module.exports = {
                 collapseWhitespace: false, // 删除空白符与换行符
             },
             chunks: ['production'],
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'loadable.html',
+            template: path.resolve(__dirname, './views/loadable/index.ejs'),
+            inject: 'body',
+            hase: false,
+            minify: {
+                // 压缩HTML文件
+                removeComments: true, // 移除HTML中的注释
+                collapseWhitespace: false, // 删除空白符与换行符
+            },
+            chunks: ['loadable'],
         }),
     ],
 };

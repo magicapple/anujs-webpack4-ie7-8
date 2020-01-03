@@ -23,7 +23,8 @@
     "dependencies": {
         "anujs": "^1.4.3",
         "react": "^16.4.0",
-        "react-dom": "^16.4.0"
+        "react-dom": "^16.4.0",
+        "react-loadable": "^5.4.0"
     },
     "devDependencies": {
         "argv": "0.0.2",
