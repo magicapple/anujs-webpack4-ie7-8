@@ -26,7 +26,7 @@ npm run reactPreview
 http://127.0.0.1:8087/production.html
 ```
 
-## anujs 1.4.7 发现的一些问题
+## anujs 1.4.7 发现的一些问题（[已经在 1.4.8 修复了](https://github.com/RubyLouvre/anu/issues/348)）
 
 1. React.createContext 无法通过 Provider  传入数据，这个问题是从 1.4.3 开始的，测试了 1.4.1 和 1.4.2 是可以的。
 
@@ -78,7 +78,7 @@ function Button(props) {
 }
 ```
 
-## anujs 1.4.6 发现的一些问题
+## anujs 1.4.6 发现的一些问题（作者建议[不使用dom操作](https://github.com/RubyLouvre/anu/issues/271#issuecomment-418786188)）
 
 > 以下两个问题  采用了先增加容器数据，然后再插入 dom 的方式规避了，具体看 demo 里面
 
